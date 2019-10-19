@@ -1,10 +1,11 @@
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');//磁盘路径
+var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');//日志
+var logger = require('morgan');
 let multer = require('multer')
-let cookieSession = require('cookie-session')
+let cookieSession = require('cookie-session');
+let cors = require('cors')
 
 
 var app = express();//web服务器
@@ -50,6 +51,13 @@ app.use(cookieSession({
   maxAge:1000*60*60*24*15
 }))
 
+app.use(cors({
+  "origin":["http://localhost:8080","http://localhost:5000","http://127.0.0.1:8054",],//允许所有前端域名
+  "credentials" :true,//允许携带凭证
+  "methods":"CET,HEAD,PUT,PATCH,POST,DELETE",
+  "allowedHeaders":['Content-Type','Authorization']
+}))
+
 
 //响应
 
@@ -68,6 +76,7 @@ app.use('/api/login',require('./routes/api/login'))
 app.use('/api/reg',require('./routes/api/reg'))
 app.use('/api/logout',require('./routes/api/logout'))
 app.use('/api/user',require('./routes/api/user'))
+app.use('/api/car',require('./routes/api/car'))
 
 
 //代理端

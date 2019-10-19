@@ -6,7 +6,7 @@ let ObjectID = mongodb.ObjectID
 module.exports = ({url,dbName,collectionName,success,error}) => {
 
   url=url||'mongodb://127.0.0.1:27017'
-  dbName=dbName||'nodeproject'
+  dbName=dbName||'newsapp'
   collectionName=collectionName||'banner'
 
   mongoCt.connect(url,{ useNewUrlParser: true,useUnifiedTopology: true },(err,client)=>{
@@ -14,7 +14,7 @@ module.exports = ({url,dbName,collectionName,success,error}) => {
       error && error('链接库错误')
     }else{
 
-      let db = client.db(dbName);
+      let db = client.db("nodeproject");
 
       let collection = db.collection(collectionName);
 

@@ -3,7 +3,7 @@ var router = express.Router();
 var mgdb = require('../../utils/mgdb')
 var bcrypt = require('bcrypt')
 
-router.get('/', function (req, res, next) {
+router.post('/', function (req, res, next) {
 
   let { username, password, save } = req.body
   //username password 必传参数
@@ -16,8 +16,9 @@ router.get('/', function (req, res, next) {
   mgdb({
     collectionName: 'user',
     success: ({ collection, client, ObjectID }) => {
+      // 以用户名查询库里有没有这组数据
       collection.find({
-        username
+        username //username:username 库里的用户名等于输入的用户名
       }, {
 
         }).toArray((err, result) => {

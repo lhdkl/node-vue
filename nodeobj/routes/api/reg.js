@@ -16,13 +16,12 @@ router.post('/', function(req, res, next) {
   }
 
   //注册时间生成服务器时间  关注粉丝设0
-  let follow = 0;
-  let fans = 0;
+  let goods=[];
   let time = Date.now();//生成注册时间
 
   //密码加盐
   password = bcrypt.hashSync(password, 10); 
-  nikename = nikename || '系统给的'; //借助第三方昵称生成库
+  nikename = nikename || username; //借助第三方昵称生成库
 
   //icon 借助multer  -》 icon 使用用户传递或者默认icon
   if(req.files.length>0 ){
@@ -38,10 +37,9 @@ router.post('/', function(req, res, next) {
   }
 
   //写库->mgdb->find 用户名 -> 存库前密码加密-》返回结果
-  console.log(0,username,password,nikename,icon,time)
+  console.log(0,username,password,nikename,icon,time,goods)
   
   mgdb({
-
     collectionName: 'user',
     success:({collection,client})=>{
       collection.find({
@@ -59,13 +57,11 @@ router.post('/', function(req, res, next) {
             if(icon.indexOf('noimage') === -1){
               fs.unlinkSync('./public'+icon)
             }
-            
             client.close()
-  
           }else{
             //通过   返回用户数据  插入库 返回插入后的数据
             collection.insertOne({
-              username,password,nikename,follow,fans,time,icon
+              username,password,nikename,time,icon,goods
             },(err,result)=>{
               if(!err){
                 // req.session[key]=result.insertedId
